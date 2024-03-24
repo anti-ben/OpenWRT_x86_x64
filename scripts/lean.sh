@@ -24,15 +24,15 @@ rm -rf openwrt-package/verysync
 rm -rf openwrt-package/luci-app-verysync
 
 # Add luci-app-ssr-plus
-git clone --depth=1 https://github.com/fw876/helloworld
+# git clone --depth=1 https://github.com/fw876/helloworld
 
 # add luci-app-daed
 git clone https://github.com/sbwml/luci-app-daed-next
 
 # Add luci-app-passwall
-git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages
-git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall2
-git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall
+# git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall-packages
+# git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall2
+# git clone --depth=1 https://github.com/xiaorouji/openwrt-passwall
 
 # Add luci-app-unblockneteasemusic
 rm -rf ../../customfeeds/luci/applications/luci-app-unblockmusic
@@ -45,7 +45,7 @@ git clone --depth=1 https://github.com/ysc3839/luci-proto-minieap
 git clone --depth=1 https://github.com/rufengsuixing/luci-app-onliner
 
 # Add OpenClash
-git clone --depth=1 https://github.com/vernesong/OpenClash
+# git clone --depth=1 https://github.com/vernesong/OpenClash
 
 # Add luci-app-poweroff
 git clone --depth=1 https://github.com/esirplayground/luci-app-poweroff
@@ -100,4 +100,16 @@ rm -rf nas-packages-luci/luci/luci-app-istorex
 sed -i 's/\/bin\/ash/\/usr\/bin\/zsh/g' package/base-files/files/etc/passwd
 
 # Modify default IP
-sed -i 's/192.168.1.1/192.168.11.1/g' package/base-files/files/bin/config_generate
+sed -i 's/192.168.1.1/10.10.10.1/g' package/base-files/files/bin/config_generate
+
+# timezone
+sed -i 's/CST-8/CST-9/g' package/lean/default-settings/files/zzz-default-settings
+sed -i 's/Shanghai/Tokyo/g' package/lean/default-settings/files/zzz-default-settings
+
+# eth0,eth1:lan,eth3:wan
+sed -i '11,12d' package/base-files/files/etc/board.d/99-default_network
+sed -i "11i ucidef_set_interfaces_lan_wan 'eth0 eth1' 'eth3'" package/base-files/files/etc/board.d/99-default_network
+
+# dhcp
+sed -i 's/100/6/g' package/network/services/dnsmasq/files/dhcp.conf
+sed -i 's/150/200/g' package/network/services/dnsmasq/files/dhcp.conf
